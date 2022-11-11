@@ -18,6 +18,8 @@ const testDiagonalWin = (filled: Board): boolean => {
   return /1[12]1[12]{2}1[12]{3}1/.test(boardStringParsed);
 };
 
+// above works for very simple win but this won't account for other more comple comibnations. only run if over a certain amount of plays has happened? 
+
 const usePlayPiece = () => {
   const [board, setBoard] = useRecoilState(boardState);
   const [player, setPlayerTurn] = useRecoilState(playerState);
@@ -59,6 +61,7 @@ const usePlayPiece = () => {
     console.log('newBoard.map((col) => col[row] || 0) joined', newBoard.map((col) => col[row] || 0).join("")) // passed into testWin and joined before regex in testWin
     console.log('newBoard', newBoard) // testing what newboard looks like
     console.log('newBoard joined', newBoard.join("")) // testing what newboard joined looks like
+    console.log('newBoard with 0s', newBoard.map((col) => col.join("").padEnd(6, "0")).join(",")) // trying zeros in full board array for more specific regex?
 
     setBoard(newBoard);
   };
