@@ -10,7 +10,13 @@ const testVHWin = (arr: number[]): boolean => /1{4}|2{4}/.test(arr.join(""));
 // example win: (player 1, diagonal right simple - joined board 2x): 12212112121
 // simple pattern: 1,*,1,*,*,1,*,*,*,1
 // regex example: 1[12]1[12]{2}1[12]{3}1 ?
-const testDiagonalWin = (filledSoFar: Board): boolean => /1[12]1[12]{2}1[12]{3}1/.test(filledSoFar.join(""));
+
+const testDiagonalWin = (filled: Board): boolean => {
+  const boardString = filled.join(",");
+  const boardStringParsed = boardString.replace(/,/g, "");
+
+  return /1[12]1[12]{2}1[12]{3}1/.test(boardStringParsed);
+};
 
 const usePlayPiece = () => {
   const [board, setBoard] = useRecoilState(boardState);
