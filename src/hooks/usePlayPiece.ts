@@ -12,13 +12,10 @@ const testVHWin = (arr: number[]): boolean => /1{4}|2{4}/.test(arr.join(""));
 // regex example: 1[12]1[12]{2}1[12]{3}1 ?
 
 const testDiagonalWin = (filled: Board): boolean => {
-  const boardString = filled.join(",");
-  const boardStringParsed = boardString.replace(/,/g, "");
+  const boardString = filled.map((col) => col.join("").padEnd(6, "0")).join(",");
 
-  return /1[12]1[12]{2}1[12]{3}1/.test(boardStringParsed);
+  return /([12])(\1{3}|(.{5}\1){3}|(.{6}\1){3}|(.{7}\1){3})/.test(boardString);
 };
-
-// above works for very simple win but this won't account for other more comple comibnations. only run if over a certain amount of plays has happened? 
 
 const usePlayPiece = () => {
   const [board, setBoard] = useRecoilState(boardState);
