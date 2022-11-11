@@ -1,11 +1,16 @@
 import { boardRows } from "const";
 import { useRecoilState } from "recoil";
 import { boardState, gameOverState, playerState } from "state";
+import { Board } from "types";
 
-const testWin = (arr: number[]): boolean => /1{4}|2{4}/.test(arr.join(""));
+const testVHWin = (arr: number[]): boolean => /1{4}|2{4}/.test(arr.join(""));
 // TODO: update regex above to account for diagonal
 // example: diagonal right etc
 // example win: (player 1, diagonal right simple - joined board): 1,22,12,1,12,1,2,1
+// example win: (player 1, diagonal right simple - joined board 2x): 12212112121
+// simple pattern: 1,*,1,*,*,1,*,*,*,1
+// regex example: 1[12]1[12]{2}1[12]{3}1 ?
+const testDiagonalWin = (filledSoFar: Board): boolean => /1[12]1[12]{2}1[12]{3}1/.test(filledSoFar.join(""));
 
 const usePlayPiece = () => {
   const [board, setBoard] = useRecoilState(boardState);
@@ -31,9 +36,10 @@ const usePlayPiece = () => {
     const row = newBoard[col].length - 1;
 
     if (
-      testWin(newBoard[col]) || // Did win vertically
-      testWin(newBoard.map((col) => col[row] || 0)) // Did win horizontally
+      testVHWin(newBoard[col]) || // Did win vertically
+      testVHWin(newBoard.map((col) => col[row] || 0)) || // Did win horizontally
       // TODO: Did win diagonally
+      testDiagonalWin(newBoard)
     ) {
       setGameOver(true);
     } else {
